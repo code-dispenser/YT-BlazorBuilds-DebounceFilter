@@ -1,0 +1,96 @@
+﻿@page "/weather"
+
+
+<PageTitle>Weather</PageTitle>
+
+<h1>Weather</h1>
+
+<p class="mt-4">Standard template weather page with increased enumerable range from 5 to 20, with our debounce filter added above the templates table.</p>
+<p>This video is not about the table only the debounce filter, a prelude to a data-grid component. The filter text is used to search across all columns</p>
+@if (forecasts == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <p>
+        Debounce filter hiding the hint text and without validation enabled, the delay is set to 300ms.
+    </p>
+    <p>
+        Without the paging component and its announcements of the number of filtered results, I would add a live region that could be used to advise screen reader users the number of records filtered
+        primarily so they know something actually has happened.
+    </p>
+    <div style="display:flex; align-items:center;justify-content:end;">
+        <TextDebounce LabelText="Filter weather results:" HintText="Table updates as you type." OnDebouncedText="FilterForecasts" DelayMs="300" />
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Date</th>
+                <th>Temp. (C)</th>
+                <th>Temp. (F)</th>
+                <th>Summary</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var forecast in _filteredForecasts)
+            {
+                <tr>
+                    <td>@forecast.Date.ToShortDateString()</td>
+                    <td>@forecast.TemperatureC</td>
+                    <td>@forecast.TemperatureF</td>
+                    <td>@forecast.Summary</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+@code {
+    private WeatherForecast[]?     forecasts;
+    private List<WeatherForecast> _filteredForecasts = [];
+
+    private async Task FilterForecasts(DebouncedTextResult debouncedText)
+    {
+        if (debouncedText.ExceptionMessage is not null || false == debouncedText.IsValid) return;
+
+        var filterText = debouncedText.TextValue;
+
+        _filteredForecasts  = forecasts!.Where(a => a.Summary!.ToLower().Contains(filterText)
+                                         || a.TemperatureC.ToString().Contains(filterText)
+                                         || a.TemperatureF.ToString().Contains(filterText)
+                                         || a.Date.ToString().Contains(filterText)
+                                         || filterText == String.Empty).ToList();
+
+        await InvokeAsync(StateHasChanged);
+    }
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulate asynchronous loading to demonstrate a loading indicator
+        await Task.Delay(500);
+
+        var startDate = DateOnly.FromDateTime(DateTime.Now);
+        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
+        forecasts = Enumerable.Range(1, 20).Select(index => new WeatherForecast
+        {
+            Date = startDate.AddDays(index),
+            TemperatureC = Random.Shared.Next(-20, 55),
+            Summary = summaries[Random.Shared.Next(summaries.Length)]
+        }).ToArray();
+
+        _filteredForecasts = forecasts.ToList();
+    }
+
+    private class WeatherForecast
+    {
+        public DateOnly Date { get; set; }
+        public int TemperatureC { get; set; }
+        public string? Summary { get; set; }
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+    }
+
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        base.OnAfterRender(firstRender);
+    }
+}

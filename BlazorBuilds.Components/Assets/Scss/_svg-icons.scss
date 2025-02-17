@@ -1,0 +1,21 @@
+﻿%valid-icon {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    --svg-valid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 21 21'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' d='m5.5 11.5l3 3l8.028-8'/%3E%3C/svg%3E");
+    background-color: currentColor;
+    mask-image: var(--svg-valid);
+    mask-repeat: no-repeat;
+    mask-size: 100% 100%;
+}
+
+%invalid-icon {
+    display: inline-block;
+    width: 1rem;
+    height: 1rem;
+    --svg-invalid: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 21 21'%3E%3Cpath fill='none' stroke='%23000' stroke-linecap='round' stroke-linejoin='round' d='m15.5 15.5l-10-10zm0-10l-10 10'/%3E%3C/svg%3E");
+    background-color: currentColor;
+    mask-image: var(--svg-invalid);
+    mask-repeat: no-repeat;
+    mask-size: 100% 100%;
+}

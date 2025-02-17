@@ -1,0 +1,80 @@
+﻿@page "/"
+@using BlazorBuilds.Components.Common.Extensions
+@using BlazorBuilds.Components.Common.Models
+
+<PageTitle>Home</PageTitle>
+
+<h1>Hello, <span style="text-decoration:line-through">world!</span> Accessible Debounce Filter!</h1>
+
+Welcome to your new app.
+<p class="mt-4">
+    <b>Note: </b>Screen reader users will have the hint text announced whether visible on screen or not. If validation is enabled, screen reader users will also receive a separate a audible alert 
+    message so depending on the hint text, this could be short or more detailed.
+</p>
+
+<p class="mt-4">
+    Debounce filter detailed hint text including validation requirements with a basic aria alert, validation enabled (based on a supplied regex pattern), delay set to 300ms.
+</p>
+<TextDebounce LabelText="Filter customers:" HintText="Table will update as you type, A-Z 0-9 characters only" ValidateEntry="true" RegexPattern="^[A-Za-z0-9]{0,25}$"
+    AriaInvalidText="Invalid characters, filtering paused" ShowHint="true" OnDebouncedText="async (eventArgs) => await HandleDebouncedText(eventArgs,1)" DelayMs="300" />
+<p class="mt-2">
+    <bold>Results: </bold>@_debounceTextResultOne
+</p>
+<hr />
+<p class="mt-4">
+    Debounce filter showing simple hint text, requirements in an aria alert, validation enabled (based on a supplied regex pattern), delay set to 300ms.
+</p>
+<TextDebounce LabelText="Filter customers:" HintText="Table will update as you type" ValidateEntry="true" ShowHint="true" RegexPattern="^[A-Za-z0-9]{0,25}$" 
+    AriaInvalidText="A-Z 0-9 characters only, filtering paused" OnDebouncedText="async (eventArgs) => await HandleDebouncedText(eventArgs,2)" DelayMs="300" />
+<p class="mt-2">
+    <bold>Results: </bold>@_debounceTextResultTwo
+</p>
+<hr />
+<p class="mt-4">
+    Debounce filter showing hint text, no validation, delay set to 300ms.
+</p>
+<TextDebounce LabelText="Filter search results:" HintText="Table will update as you type." ValidateEntry="false" ShowHint="true" OnDebouncedText="async (eventArgs) => await HandleDebouncedText(eventArgs,3)" DelayMs="300" />
+<p class="mt-2">
+    <bold>Results: </bold>@_debounceTextResultThree
+</p>
+<hr />
+<p class="mt-4">
+    Debounce filter not showing hint text, without validation, delay set to 300ms.
+</p>
+
+<TextDebounce LabelText="Filter results:" HintText="All fields are searched as you type." ValidateEntry="false" ShowHint="false" OnDebouncedText="async (eventArgs) => await HandleDebouncedText(eventArgs,4)" DelayMs="300" />
+<p class="mt-2">
+    <bold>Results: </bold>@_debounceTextResultFour
+</p>
+<hr />
+<p class="mt-4">
+    Debounce filter not showing hint text, validation with an invalid regex pattern, delay set to 300ms.
+</p>
+<TextDebounce LabelText="Filter results:" HintText="All fields are searched as you type." ValidateEntry="true" RegexPattern="]["
+    AriaInvalidText="Invalid characters, filtering paused" ShowHint="false" OnDebouncedText="async (eventArgs) => await HandleDebouncedText(eventArgs,5)" DelayMs="300" />
+<p>
+    <bold>Results: </bold>@_debounceTextResultFive
+</p>
+@code{
+
+
+    private string _debounceTextResultOne   = String.Empty;    
+    private string _debounceTextResultTwo   = String.Empty;
+    private string _debounceTextResultThree = String.Empty;
+    private string _debounceTextResultFour  = String.Empty;
+    private string _debounceTextResultFive  = String.Empty;
+
+    private async Task HandleDebouncedText(DebouncedTextResult debouncedText, int forComponentNumber)
+    {
+        switch(forComponentNumber)
+        {
+            case 1: _debounceTextResultOne   = debouncedText.ToString(); break;
+            case 2: _debounceTextResultTwo   = debouncedText.ToString(); break;
+            case 3: _debounceTextResultThree = debouncedText.ToString(); break;
+            case 4: _debounceTextResultFour  = debouncedText.ToString(); break;
+            case 5: _debounceTextResultFive  = debouncedText.ToString(); break;
+        }
+
+        await InvokeAsync(StateHasChanged);//We need this as we are not using an eventcallback that would cause a render.
+    }
+}
