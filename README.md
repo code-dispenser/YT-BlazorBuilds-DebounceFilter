@@ -4,7 +4,7 @@
 
 This repository contains the solution from my YouTube video showing how to build an accessible debounce filter component.
 
-YouTube video: TBA
+YouTube video: https://youtu.be/92Jf_VU0gd0
 
 Coffees welcomed : https://ko-fi.com/codedispenser
 
