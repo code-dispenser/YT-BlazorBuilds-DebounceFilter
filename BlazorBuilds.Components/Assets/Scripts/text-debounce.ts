@@ -83,4 +83,11 @@ function unRegisterTextDebounce(inputElement: HTMLInputElement) {
     }
 }
 
-export { registerTextDebounce, unRegisterTextDebounce };
+function clearTextValue(inputElement: HTMLInputElement) {
+
+    if (!inputElement) return;
+    inputElement.value = "";
+    inputElement.removeAttribute("aria-invalid");
+}
+
+export { registerTextDebounce, unRegisterTextDebounce, clearTextValue };

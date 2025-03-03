@@ -71,9 +71,13 @@
         await _jsModule.InvokeVoidAsync(GlobalValues.JavaScript_Register_Func, textInputRef, configuration);
     }
 
+    public async Task ClearTextValue()
+
+        => await (_jsModule is not null).WhenTrue(() => _jsModule!.InvokeVoidAsync(GlobalValues.JavaScript_Clear_Text_Func, _textInputRef));
+
     [JSInvokable]
     public async Task HandleJSDebounce(DebouncedTextResult debouncedText)  
-  
+
         => await (OnDebouncedText is not null).WhenTrue(() => OnDebouncedText!(debouncedText));
 
     public string GetHintTextClasses(bool showHint)
@@ -90,5 +94,5 @@
 
         _dotNetRef?.Dispose();
     }
-   
+    
 }

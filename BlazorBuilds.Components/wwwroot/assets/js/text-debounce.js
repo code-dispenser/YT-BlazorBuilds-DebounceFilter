@@ -62,5 +62,11 @@ function unRegisterTextDebounce(inputElement) {
         _handlerMap.delete(inputElement);
     }
 }
-export { registerTextDebounce, unRegisterTextDebounce };
+function clearTextValue(inputElement) {
+    if (!inputElement)
+        return;
+    inputElement.value = "";
+    inputElement.removeAttribute("aria-invalid");
+}
+export { registerTextDebounce, unRegisterTextDebounce, clearTextValue };
 //# sourceMappingURL=text-debounce.js.map

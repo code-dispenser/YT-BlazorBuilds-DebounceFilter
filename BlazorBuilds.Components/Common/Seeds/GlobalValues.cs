@@ -2,6 +2,7 @@
 
 internal class GlobalValues
 {
+    public const string JavaScript_Clear_Text_Func          = "clearTextValue";
     public const string JavaScript_Register_Func            = "registerTextDebounce";
     public const string JavaScript_UnRegister_Func          = "unRegisterTextDebounce";
     public const string JavaScript_File_Path                = "./_content/BlazorBuilds.Components/assets/js/text-debounce.js";
